@@ -8,19 +8,16 @@ def test_insider_qa_jobs_flow(driver):
     qa_careers_page = QACareersPage(driver)
     open_positions_page = OpenPositionsPage(driver)
 
-    # 1) Home page should open and main blocks should be loaded
     home_page.open_and_validate()
     assert "Insider" in home_page.get_title(), "Insider home page title is not loaded"
     assert home_page.are_main_blocks_visible(), "One or more home page main blocks are not visible"
 
-    # 2) Navigate to QA careers, click "See all QA jobs", and filter jobs
     qa_careers_page.open_and_go_to_qa_jobs()
     open_positions_page.wait_until_loaded()
     assert "/careers/open-positions" in driver.current_url, "Open positions page is not loaded"
 
     open_positions_page.filter_by_location_and_department()
 
-    # 3) Validate all listed jobs
     jobs = open_positions_page.get_jobs_data()
     assert jobs, "No jobs found for selected filters"
 
@@ -41,7 +38,6 @@ def test_insider_qa_jobs_flow(driver):
             f"Location does not contain expected Istanbul wording: {location_text}"
         )
 
-    # 4) Click "View Role" and verify redirect to Lever
     open_positions_page.click_first_view_role()
     open_positions_page.wait_for_lever_url()
     assert "lever.co" in open_positions_page.get_current_url().lower(), (
