@@ -85,8 +85,7 @@ class OpenPositionsPage(BasePage):
                 if available_department is None:
                     raise RuntimeError("No expected Quality Assurance department option found")
 
-                # Set department first without triggering a request,
-                # then trigger once from location to avoid racing async calls.
+
                 self._select_by_text(self.DEPARTMENT_SELECT, available_department, dispatch_change=False)
                 self._select_by_text(self.LOCATION_SELECT, available_location, dispatch_change=True)
 
@@ -107,7 +106,6 @@ class OpenPositionsPage(BasePage):
                 self.driver.refresh()
                 self.wait_for_present(*self.JOB_LIST)
 
-        # Final fallback: open URL with filter params directly.
         self.open("https://insiderone.com/careers/open-positions/?department=qualityassurance&location=istanbul")
         self.wait_for_present(*self.JOB_LIST)
         try:
